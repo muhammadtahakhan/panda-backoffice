@@ -2,6 +2,8 @@
 
 Welcome! This project was created as a boilerplate / app starter kit for getting up and running with Laravel + ReactJS. I love using React and Laravel, but the resources out in the wild tend to be focused on VueJS, or an integration of something like LiveWire or Inertia. I wanted to create a boilerplate that was focused on ReactJS, and that was easy to get up and running with.
 
+![Home Image](.github/images/screenshot-home.png)
+
 ### Features
 
 - Laravel 9
@@ -34,6 +36,10 @@ Once you've got that squared away, follow the steps below to get setup.
 5. Run `php artisan migrate:fresh` to run the database migrations
 6. Run `npm run build` to build the JS and CSS assets.
 7. Hopefully success! Try visiting the site in your web browser. You should see the homepage.
+
+![Home Image](.github/images/screenshot-login.png)
+
+![Home Image](.github/images/screenshot-signup.png)
 
 ### Developing your app
 
