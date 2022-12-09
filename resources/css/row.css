@@ -1,0 +1,11 @@
+.row-container {
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+	flex-wrap: wrap;
+	gap: 30px;
+}
+
+.row-container .box {
+	flex: 0 0 300px;
+}
