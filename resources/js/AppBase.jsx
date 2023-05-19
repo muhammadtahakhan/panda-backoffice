@@ -5,20 +5,32 @@ import React, { useState } from 'react'
 
 import AppData from './components/global/AppData'
 import { CookiesProvider } from 'react-cookie'
-import Dashboard from './pages/Dashboard'
 import DefaultLayout from './layouts/DefaultLayout'
 import EmailNotVerifiedAlert from './components/common/notifications/EmailNotVerifiedAlert'
 import Home from './pages/Home'
 import IsLoggedInRoute from './components/routing/IsLoggedInRoute'
-import Login from './pages/auth/Login'
-import PageNotFound from './pages/PageNotFound'
-import PasswordForgot from './pages/auth/PasswordForgot'
-import PasswordReset from './pages/auth/PasswordReset'
 import { Provider } from 'react-redux'
 import Signup from './pages/auth/Signup'
 import SignupComplete from './pages/auth/SignupComplete'
 import SignupVerify from './pages/auth/SignupVerify'
 import store from './store'
+
+// ========================Pages
+import Login from './pages/auth/Login'
+import PageNotFound from './pages/PageNotFound'
+import PasswordForgot from './pages/auth/PasswordForgot'
+import PasswordReset from './pages/auth/PasswordReset'
+
+import Dashboard from './pages/Dashboard'
+import Sales from './pages/sales/sales'
+
+//theme
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+
+//core
+import "primereact/resources/primereact.min.css";
+import AdminLayout from './layouts/AdminLayout'
+
 
 export default function AppBase() {
 
@@ -31,12 +43,12 @@ export default function AppBase() {
 
                 { loaded && (
                     <BrowserRouter>
-                        <DefaultLayout>
+                        {/* <DefaultLayout> */}
 
-                            <EmailNotVerifiedAlert />
-                            
+                            {/* <EmailNotVerifiedAlert /> */}
+
                             <Routes>
-                                <Route path="/" element={<Home />} />
+                                <Route path="/" element={<Login />} />
                                 <Route path="/signin" element={ <Login /> } />
 
                                 <Route path="/signup" element={ <Signup /> } />
@@ -46,12 +58,19 @@ export default function AppBase() {
                                 <Route path="/forgot-password" element={ <PasswordForgot /> } />
                                 <Route path="/password/reset/:token" element={ <PasswordReset /> } />
 
-                                <Route path="/dashboard" element={ <IsLoggedInRoute><Dashboard /></IsLoggedInRoute> } />
+                                {/* <Route path="/dashboard" element={ <IsLoggedInRoute><AdminLayout /></IsLoggedInRoute> } /> */}
+                                <Route path="/dashboard" element={ <AdminLayout /> } >
+
+                                    <Route index element={ <Dashboard />} />
+                                    <Route path="sales" element={ <IsLoggedInRoute><Sales /></IsLoggedInRoute> } />
+
+                                </Route>
+
 
                                 <Route path="*" element={ <PageNotFound /> } />
                             </Routes>
-                        </DefaultLayout>
-                        
+                        {/* </DefaultLayout> */}
+
                     </BrowserRouter>
                 )}
             </Provider>

@@ -8,8 +8,8 @@ export default function AppData({ onDone }) {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        window.axios.get('/sanctum/csrf-cookie')
-            .then(() => {
+        // window.axios.get('/sanctum/csrf-cookie')
+        //     .then(() => {
                 window.axios.get('/api/user/me')
                     .then(response => {
                         if (response?.data?.data) {
@@ -23,7 +23,7 @@ export default function AppData({ onDone }) {
                         dispatch(saveUser(null))
                         onDone()
                     })
-            })
+            // })
     }, [])
 
     return null

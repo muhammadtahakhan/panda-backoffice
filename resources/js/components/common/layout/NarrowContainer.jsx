@@ -3,7 +3,7 @@ import React from 'react'
 export default function NarrowContainer({ children }) {
 
     return (
-        <div className="px-4 md:w-1/2 mx-auto">
+        <div className="px-4 md:w-1/2 mx-auto my-40">
             { children }
         </div>
     )

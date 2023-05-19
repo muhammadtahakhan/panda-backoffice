@@ -9,6 +9,7 @@ import InputField from '../common/forms/InputField'
 import Text from '../common/typography/Text'
 import { saveUser } from '../../redux/userSlice'
 import { useDispatch } from 'react-redux'
+import { Cookies } from 'react-cookie'
 
 export default function LoginForm() {
 
@@ -19,6 +20,13 @@ export default function LoginForm() {
     const [remember, setRemember] = useState(false)
     const [formErrors, setFormErrors] = useState([])
     const [submitting, setSubmitting] = useState(false)
+
+    const getAuthCookieExpiration = () =>
+    {
+        let date = new Date();
+        date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));  // 7 days
+        return date;
+    }
 
     const submit = async(e) => {
         e.preventDefault()
@@ -34,9 +42,13 @@ export default function LoginForm() {
 
         window.axios.post('/api/login', {
             email,
-            password,    
+            password,
             remember,
         }).then(response => {
+
+            const cookie = new Cookies();
+            cookie.set('is_auth', true, {path: '/', expires: getAuthCookieExpiration(), sameSite: 'lax', httpOnly: false});
+
             if (response?.data?.success) {
                 dispatch(saveUser(response?.data?.user))
                 navigate('/dashboard')
@@ -58,7 +70,7 @@ export default function LoginForm() {
         <form onSubmit={ e => submit(e) } className="my-4">
 
             { formErrors.length > 0 && (
-                <Alert className="mb-4">{ formErrors?.map(item => item) }</Alert>    
+                <Alert className="mb-4">{ formErrors?.map(item => item) }</Alert>
             )}
 
             <FormRow>
@@ -92,8 +104,8 @@ export default function LoginForm() {
             </FormRow>
             <FormRow centered>
                 <div>
-                    <Button 
-                        variant="primary" 
+                    <Button
+                        variant="primary"
                         type="submit"
                         disabled={ submitting }
                         icon={
@@ -103,7 +115,7 @@ export default function LoginForm() {
                                 </svg>
 
                             ) : null
-                        }   
+                        }
                     >Log In</Button>
                 </div>
                 <div>

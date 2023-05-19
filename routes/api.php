@@ -31,10 +31,10 @@ Route::post('/register/verify/{id}/{hash}', [RegistrationController::class, 'ver
 
 Route::post('/password', [PasswordController::class, 'store']);
 Route::post('/password/reset', [PasswordController::class, 'reset']);
-Route::get('/user/me', [UserController::class, 'me']);
 Route::post('/register/resend-verification-email', [RegistrationController::class, 'resend']);
 
 Route::middleware(['auth:sanctum'])->group(function() {
+    Route::get('/user/me', [UserController::class, 'me']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

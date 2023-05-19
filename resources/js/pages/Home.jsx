@@ -6,11 +6,11 @@ import Text from '../components/common/typography/Text'
 export default function Home() {
 
     return (
-        <DefaultContainer>
+        <>
 
             <PageTitle>Home Page</PageTitle>
             <Text>This is the example home page.</Text>
 
-        </DefaultContainer>
+        </>
     )
 }

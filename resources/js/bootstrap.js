@@ -11,7 +11,7 @@ window._ = _;
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-window.axios.defaults.baseURL = import.meta.env.VITE_APP_URL
+window.axios.defaults.baseURL = import.meta.env.REACT_APP_BACKEND_URL
 window.axios.defaults.withCredentials = true;
 
 /**
