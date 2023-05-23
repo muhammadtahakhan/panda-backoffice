@@ -27,6 +27,7 @@
     <body class="antialiased bg-stone-50">
         <div id="app"></div>
         @viteReactRefresh
-        @vite('resources/js/app.jsx') 
+        @vite('resources/js/app.jsx')
     </body>
 </html>
+
