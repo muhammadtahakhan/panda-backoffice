@@ -43,7 +43,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        dd("hello");
     }
 
     /**
@@ -54,7 +54,16 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        try {
+
+            dd("hello");
+
+
+          } catch (\Exception $e) {
+
+            return response()->json(['error' => $e->getMessage()], 500);
+
+        }
     }
 
     /**

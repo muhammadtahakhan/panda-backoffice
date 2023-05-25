@@ -16,6 +16,7 @@ class Authenticate extends Middleware
     {
         if (! $request->expectsJson()) {
             return route('login');
+            // return response()->json(['error' => "Opps some thing went wrong"], 500);
         }
     }
 
