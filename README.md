@@ -36,3 +36,7 @@ Once you've got that squared away, follow the steps below to get setup.
 6. Run `npm run build` to build the JS and CSS assets.
 7. Hopefully success! Try visiting the site in your web browser. You should see the homepage.
 
+
+
+
+php artisan make:model Product -crR

@@ -45,8 +45,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // $request->user()->currentAccessToken()->delete();
-        // $cookie = cookie()->forget('token');
+        $request->user()->currentAccessToken()->delete();
+        $cookie = cookie()->forget('token');
 
         Auth::guard('web')->logout();
         $request->session()->invalidate();

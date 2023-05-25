@@ -13,6 +13,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\RenderClientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SceneTemplateController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,10 +34,13 @@ Route::post('/password', [PasswordController::class, 'store']);
 Route::post('/password/reset', [PasswordController::class, 'reset']);
 Route::post('/register/resend-verification-email', [RegistrationController::class, 'resend']);
 
+Route::get('/product', [ProductController::class, 'index']);
+
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/user/me', [UserController::class, 'me']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
+
 
 });
 
