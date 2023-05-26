@@ -21,29 +21,29 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
+            // dd($request->search);
+            $query = Product::query();
+
+            if (!empty($request->search)) {
+                $query->where('name', 'LIKE', '%' . $request->search . '%')
+                ->orwhere('name_urdu', 'LIKE', '%' . $request->search . '%')
+                ->orwhere('code', 'LIKE', '%' . $request->search . '%')
+                ->orwhere('cost_price', 'LIKE', '%' . $request->search . '%')
+                ->orwhere('sale_price', 'LIKE', '%' . $request->search . '%');
+            }
 
 
             if($request->has('per_page'))  $this->per_page=$request->per_page;
-            $products = Product::paginate( $this->per_page );
+            $products = $query->paginate( $this->per_page );
 
             return  ProductResource::collection($products);
 
 
           } catch (\Exception $e) {
 
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
 
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        dd("hello");
     }
 
     /**
@@ -56,12 +56,13 @@ class ProductController extends Controller
     {
         try {
 
-            dd("hello");
 
+            $product = Product::create($request->post());
+            return response(['data' => new ProductResource($product)]);
 
           } catch (\Exception $e) {
 
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
 
         }
     }
@@ -72,21 +73,20 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        try {
+            $product = Product::find($id);
+            return response(['data' => new ProductResource($product)]);
+
+        } catch (\Exception $e) {
+
+          return response()->json(['message' => $e->getMessage()], 500);
+
+      }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -97,7 +97,15 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        try {
+
+            return response(['data' => new ProductResource($product)]);
+
+        } catch (\Exception $e) {
+
+          return response()->json(['message' => $e->getMessage()], 500);
+
+      }
     }
 
     /**
@@ -106,8 +114,16 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        try {
+            $product = Product::destroy($id);
+            return response(['message' => "Delete successfully" ]);
+
+        } catch (\Exception $e) {
+
+          return response()->json(['message' => $e->getMessage()], 500);
+
+      }
     }
 }
