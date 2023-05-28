@@ -9,29 +9,14 @@ import { Column } from 'primereact/column';
 import { Dialog } from 'primereact/dialog';
 import ProductFrom from './productForm';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../redux/productSlice";
+import { fetchProducts, showForm, hideForm } from "../../redux/productSlice";
 import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 export default function Products() {
     const dispatch = useDispatch();
-    const { products, isLoading } = useSelector(state => state.products);
+    const { products, isLoading, formVisibility } = useSelector(state => state.products);
     const [FormVisibility, setFormVisibility] = useState(false);
-    //   const getData = (search)=>{
-
-    //     window.axios.get('/api/product').then(response => {
-    //         setProducts( response.data.data);
-    //         console.log("==> ", response.data);
-    //     }).catch(error => {
-    //         handleError(error)
-    //     })
-
-    // }
-
-    const handleError = error => {
-        setFormErrors(["An unknown error has occurred. Please try again later."])
-        setSubmitting(false)
-    }
 
 
     useEffect(() => {
@@ -45,7 +30,8 @@ export default function Products() {
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between">
-                <Button onClick={()=>setFormVisibility(true)} type="button" icon="pi pi-plus" label="Add Product" outlined  />
+                {/* <Button onClick={()=>setFormVisibility(true)} type="button" icon="pi pi-plus" label="Add Product" outlined  /> */}
+                <Button onClick={()=> dispatch(showForm())} type="button" icon="pi pi-plus" label="Add Product" outlined  />
                 {/* <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText  placeholder="Keyword Search" />
@@ -82,7 +68,7 @@ export default function Products() {
 
         {/* ======================================Overlay From Start=========================================== */}
         <div className="card flex justify-content-center">
-            <Dialog position={'right'} header="Header" visible={FormVisibility} onHide={() => setFormVisibility(false)}
+            <Dialog position={'right'} header="Header" visible={formVisibility} onHide={() => dispatch(hideForm())}
                 style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}>
                     <ProductFrom/>
 

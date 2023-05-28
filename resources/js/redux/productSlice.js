@@ -4,8 +4,17 @@ export const productSlice = createSlice({
     name: 'products',
     initialState: {
         products: [],
+        isLoading: false,
+        error: false,
+        formVisibility:false
     },
     reducers: {
+        hideForm: state => {
+            state.formVisibility = false;
+        },
+        showForm: state => {
+            state.formVisibility = true;
+        },
         startLoading: state => {
                 state.isLoading = true;
             },
@@ -23,7 +32,7 @@ export const productSlice = createSlice({
     }
 })
 
-export const { saveProduct, productsSuccess, startLoading, hasError } = productSlice.actions
+export const { saveProduct, productsSuccess, startLoading, hasError, showForm, hideForm } = productSlice.actions
 export default productSlice.reducer
 
  export const fetchProducts = () => async dispatch => {
@@ -32,7 +41,8 @@ export default productSlice.reducer
             await   window.axios.get('/api/product').then(response => {
                 dispatch(productsSuccess(response.data.data))
             }).catch(error => {
-                handleError(error)
+                // handleError(error)
+                console.log("data", error)
             })
         }
         catch (e) {

@@ -14,10 +14,7 @@ export default function AdminLayout({ children }) {
 
             <main className=" h-screen bg-stone-200 overflow-x-hidden max-w-full  px-4">
 
-
-
             <Outlet />
-
 
             </main>
             <SiteFooter />
