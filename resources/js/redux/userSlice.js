@@ -10,7 +10,7 @@ export const userSlice = createSlice({
             state.user = action.payload
         },
     }
-})  
+})
 
 export const { saveUser } = userSlice.actions
 export default userSlice.reducer

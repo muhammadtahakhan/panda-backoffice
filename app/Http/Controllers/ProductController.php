@@ -21,7 +21,6 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
-            // dd($request->search);
             $query = Product::query();
 
             if (!empty($request->search)) {
