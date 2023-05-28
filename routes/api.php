@@ -83,5 +83,6 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('/product', [ProductController::class, 'store']);
     Route::get('/product/{id}', [ProductController::class, 'show']);
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
+    Route::post('/product_adjustment', [ProductController::class, 'product_adjustment']);
 });
 

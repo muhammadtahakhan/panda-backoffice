@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\ProductAdjustmentRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductTransaction;
 use App\Http\Resources\ProductResource;
 
 
@@ -116,6 +118,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
+
             $product = Product::destroy($id);
             return response(['message' => "Delete successfully" ]);
 
@@ -125,4 +128,20 @@ class ProductController extends Controller
 
       }
     }
+
+    public function product_adjustment(ProductAdjustmentRequest $request)
+    {
+        try {
+
+            $product = product::first()->quantity;
+            print_r($product); die();
+            return response(['data' => new ProductResource($product)]);
+
+          } catch (\Exception $e) {
+
+            return response()->json(['message' => $e->getMessage()], 500);
+
+        }
+    }
+
 }
