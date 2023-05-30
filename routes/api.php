@@ -14,6 +14,7 @@ use App\Http\Controllers\RenderClientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SceneTemplateController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PartnerController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -84,5 +85,12 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/product/{id}', [ProductController::class, 'show']);
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
     Route::post('/product_adjustment', [ProductController::class, 'product_adjustment']);
+
+
+    Route::get('/partner', [PartnerController::class, 'index']);
+    Route::post('/partner', [PartnerController::class, 'store']);
+    Route::get('/partner/{id}', [PartnerController::class, 'show']);
+    Route::delete('/partner/{id}', [PartnerController::class, 'destroy']);
+    Route::patch('/partner/{id}', [PartnerController::class, 'update']);
 });
 

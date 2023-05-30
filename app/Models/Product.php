@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CreatedUpdatedBy;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedUpdatedBy, SoftDeletes;
     protected $fillable = ['name','name_urdu','code', 'cost_price', 'sale_price'];
     protected $appends = ['quantity'];
 
