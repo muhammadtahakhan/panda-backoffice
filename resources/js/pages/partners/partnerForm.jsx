@@ -4,15 +4,13 @@ import React, {useRef, useState} from 'react'
 import {useDispatch} from 'react-redux';
 import {useForm} from 'react-hook-form';
 import classNames from 'classnames'
-import { fetchProducts, hideForm } from "../../redux/productSlice";
 
 // ---------------------Prime React
 import {Button} from 'primereact/button';
 import { Toast } from 'primereact/toast';
+import { fetchPartners, hideForm } from '../../redux/partnerSlice';
 
-
-
-export default function ProductFrom() {
+export default function PartnerFrom() {
     const dispatch = useDispatch();
     const toastBR = useRef(null);
     const [loading, setLoading] = useState(false);
@@ -20,25 +18,33 @@ export default function ProductFrom() {
     const {register, handleSubmit, formState, setError} = form;
     const {errors} = formState;
 
+    const showMessage = (message) => {
+        toastBR.current.show({ severity: 'error', summary: 'Error', detail: message, life: 3000 });
+    };
+
 
     const onSubmitForm = (data) => {
+        console.log("Form submited", data)
         setLoading(true);
-        window.axios.post('/api/product',data).then(response => {
-            dispatch(fetchProducts());
+        window.axios.post('/api/partner',data).then(response => {
+            console.log("==>");
+            dispatch(fetchPartners());
             setLoading(false);
             dispatch(hideForm())
         }).catch(error => {
             setLoading(false);
+            console.log("==> ", error.response.data.message)
+            console.log("==> ", error.response.data.errors)
             showMessage(error.response.data.message);
             Object.keys(error.response.data.errors).forEach(errorKey => {
-                   setError(errorKey, { type: 'server', message: error.response.data.errors[errorKey][0] });
+                console.log("field ==> ", errorKey)
+                console.log("field ==> ", error.response.data.errors[errorKey][0])
+
+                setError(errorKey, { type: 'server', message: error.response.data.errors[errorKey][0] });
             });
         })
     }
 
-    const showMessage = (message) => {
-        toastBR.current.show({ severity: 'error', summary: 'Error', detail: message, life: 3000 });
-    };
 
     return ( <form
         onSubmit={handleSubmit(onSubmitForm)}
@@ -51,7 +57,7 @@ export default function ProductFrom() {
                 <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-first-name">
-                    Product Name
+                     Name
                 </label>
                 <input
                     {...register('name', {required:{value:true, message:"name is required"}})}
@@ -68,7 +74,7 @@ export default function ProductFrom() {
                 <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-last-name">
-                    Product Name in Urdu
+                     Name in Urdu
                 </label>
                 <input
                     {...register('name_urdu', {required:{value:true, message:"name in urdu is required"}})}
@@ -85,15 +91,15 @@ export default function ProductFrom() {
                 <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-city">
-                    Code
+                    Phone
                 </label>
                 <input
-                    {...register('code', {required:{value:true, message:"code is required"}})}
-                    className={classNames("appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500", {'border-red-500':errors.name_urdu?.message})}
+                    {...register('phone', {required:{value:true, message:"code is required"}})}
+                    className={classNames("appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500", {'border-red-500':errors.phone?.message})}
                     id="grid-city"
                     type="text"
                     placeholder=""/>
-                     <p className="text-red-500 text-xs italic">{errors.code?.message}</p>
+                     <p className="text-red-500 text-xs italic">{errors.phone?.message}</p>
 
             </div>
 
@@ -101,32 +107,18 @@ export default function ProductFrom() {
                 <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-city">
-                    Cost Price
+                    Address
                 </label>
                 <input
-                    {...register('cost_price', {required:{value:true, message:"costing is required"}})}
-                    className={classNames("appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500", {'border-red-500':errors.cost_price?.message})}
+                    {...register('address', {required:{value:true, message:"costing is required"}})}
+                    className={classNames("appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500", {'border-red-500':errors.address?.message})}
                     id="grid-city"
-                    type="number"
+                    type="text"
                     placeholder=""/>
-                     <p className="text-red-500 text-xs italic">{errors.cost_price?.message}</p>
+                     <p className="text-red-500 text-xs italic">{errors.address?.message}</p>
             </div>
 
-            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-zip">
-                    Sale Price
-                </label>
-                <input
-                    {...register('sale_price', {required:{valueAsNumber: true,value:true, message:"sale price is required"}})}
-                    className={classNames("appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500", {'border-red-500':errors.sale_price?.message})}
-                    id="grid-zip"
-                    type="number"
-                    placeholder=""/>
-                    <p className="text-red-500 text-xs italic">{errors.sale_price?.message}</p>
 
-            </div>
         </div>
 
         <div className="container py-4 px-4 mx-0 min-w-full flex flex-col items-center">

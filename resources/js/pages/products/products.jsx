@@ -5,13 +5,14 @@ import SiteTitle from '../../components/global/SiteTitle'
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-
+import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
+import classNames from 'classnames'
+
 import ProductFrom from './productForm';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, showForm, hideForm } from "../../redux/productSlice";
-import { ProgressSpinner } from 'primereact/progressspinner';
-import classNames from 'classnames'
+
 
 
 
@@ -25,7 +26,7 @@ export default function Products() {
          }, [dispatch]);
 
 
-// =================================================================================Templated Start
+// =================================================================================Data Table Template
     const paginatorLeft = <Button type="button" icon="pi pi-refresh" text />;
     const paginatorRight = <Button type="button" icon="pi pi-download" text />;
     const renderHeader = () => {
