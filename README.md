@@ -44,10 +44,15 @@ php artisan make:model Product -crR
 
 <!-- ============================================================= -->
 ## For Backend
-1) create table mogration
-2) create model, controller, request, resource (php artisan make:model Product -crR)
+1) create table migration (php artisan make:migration create_products_table Then -> php artisan migrate)
+2) create model, controller, request, resource (php artisan make:model Product -crR OR -> php artisan make:model Payment)
 2.5) add use App\Traits\CreatedUpdatedBy; use Illuminate\Database\Eloquent\SoftDeletes; in models
 3) test api using postman
 ## For Frontend
 1) create page required feature
 2) create reducer slice (for state management)
+
+
+
+Command :
+php artisan migrate:rollback --step=1

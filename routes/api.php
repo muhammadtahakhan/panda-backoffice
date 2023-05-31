@@ -12,6 +12,7 @@ use App\Http\Controllers\RenderJobController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\RenderClientController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SaleOrderController;
 use App\Http\Controllers\SceneTemplateController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PartnerController;
@@ -92,5 +93,15 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/partner/{id}', [PartnerController::class, 'show']);
     Route::delete('/partner/{id}', [PartnerController::class, 'destroy']);
     Route::patch('/partner/{id}', [PartnerController::class, 'update']);
+
+
+    // get all sale orders
+    Route::get('/sale_order', [SaleOrderController::class, 'index']);
+    Route::post('/sale_order', [SaleOrderController::class, 'store']);
+
+    // get all sale orders by specific partner
+    // create sale order
+    // delete sale order by {id}
+
 });
 
