@@ -48,6 +48,35 @@ class SaleOrderController extends Controller
 
 
     /**
+     * Display a listing of the resource.
+     *
+     * @param  \App\Http\Requests\Request $request
+     * @return \Illuminate\Http\Request
+     */
+    public function getByPartner(Request $request, $partner_id)
+    {
+        try {
+            $query = SaleOrder::query()->where('partner_id', $partner_id);
+
+            if (!empty($request->search)) {
+
+                $query->where('comment', 'LIKE', '%' . $request->search . '%')
+                ->orwhere('order_date', 'LIKE', '%' . $request->search . '%');
+            }
+
+            if($request->has('per_page'))  $this->per_page=$request->per_page;
+            $data = $query->paginate( $this->per_page );
+
+            return  SaleOrderResource::collection($data);
+
+          } catch (\Exception $e) {
+
+            return response()->json(['message' => $e->getMessage()], 500);
+
+        }
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreSaleOrderRequest  $request
@@ -76,14 +105,14 @@ class SaleOrderController extends Controller
                    $order_details = SaleOrderDetail::create($value);
                    $order_details->save();
                 }
-
+                DB::commit();
                 return response(['data' => new SaleOrderResource($data)]);
                 /*------------------------------------------
                 --------------------------------------------
                 Commit Transaction to Save Data to Database
                 --------------------------------------------
                 --------------------------------------------*/
-                DB::commit();
+
           } catch (\Exception $e) {
                 /*------------------------------------------
                 --------------------------------------------
@@ -125,8 +154,17 @@ class SaleOrderController extends Controller
      * @param  \App\Models\SaleOrder  $saleOrder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SaleOrder $saleOrder)
+    public function destroy(SaleOrder $saleOrder, $id)
     {
-        //
+        try {
+
+            $data = SaleOrder::destroy($id);
+            return response(['message' => "Delete successfully" ]);
+
+        } catch (\Exception $e) {
+
+            return response()->json(['message' => $e->getMessage()], 500);
+
+      }
     }
 }

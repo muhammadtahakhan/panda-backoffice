@@ -94,14 +94,15 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::delete('/partner/{id}', [PartnerController::class, 'destroy']);
     Route::patch('/partner/{id}', [PartnerController::class, 'update']);
 
-
     // get all sale orders
     Route::get('/sale_order', [SaleOrderController::class, 'index']);
+     // create sale order
     Route::post('/sale_order', [SaleOrderController::class, 'store']);
-
     // get all sale orders by specific partner
-    // create sale order
+    Route::get('/sale_order/{partner_id}', [SaleOrderController::class, 'getByPartner']);
     // delete sale order by {id}
+    Route::delete('/sale_order/{id}', [SaleOrderController::class, 'destroy']);
+
 
 });
 
