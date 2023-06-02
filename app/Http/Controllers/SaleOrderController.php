@@ -23,7 +23,7 @@ class SaleOrderController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = SaleOrder::query();
+            $query = SaleOrder::query()->orderBy('id', 'DESC');
 
             if (!empty($request->search)) {
 
@@ -56,7 +56,7 @@ class SaleOrderController extends Controller
     public function getByPartner(Request $request, $partner_id)
     {
         try {
-            $query = SaleOrder::query()->where('partner_id', $partner_id);
+            $query = SaleOrder::query()->orderBy('id', 'DESC')->where('partner_id', $partner_id)->order->with('customer');
 
             if (!empty($request->search)) {
 

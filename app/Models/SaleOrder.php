@@ -14,7 +14,7 @@ class SaleOrder extends Model
     use HasFactory, CreatedUpdatedBy, SoftDeletes;
 
     protected $fillable = ['partner_id','comment','order_date'];
-    protected $appends = ['total_amount', 'customer'];
+    protected $appends = ['total_amount'];
 
     protected function totalAmount(): Attribute
     {
@@ -25,11 +25,21 @@ class SaleOrder extends Model
         );
     }
 
-    protected function customer(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => Partner::find($this->partner_id),
 
-        );
+
+    /**
+     * Get the post that owns the Sale Order.
+     */
+    public function customer()
+    {
+        return $this->belongsTo(Partner::class,  'partner_id', 'id');
+    }
+
+     /**
+     * Get the details for the Sale Order.
+     */
+    public function details()
+    {
+        return $this->hasMany(SaleOrderDetail::class);
     }
 }

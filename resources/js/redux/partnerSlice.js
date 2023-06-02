@@ -33,10 +33,10 @@ export default partnerSlice.reducer
         dispatch(startLoading());
         try {
             await   window.axios.get('/api/partner?page=1&per_page=100').then(response => {
-                console.log("partners :", response.data.data)
+
                 dispatch(fetchSuccess(response.data.data))
             }).catch(error => {
-                console.log("data", error)
+
             })
         }
         catch (e) {
