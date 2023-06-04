@@ -93,9 +93,7 @@ class SaleOrderController extends Controller
                 --------------------------------------------*/
                 DB::beginTransaction();
 
-                $data = SaleOrder::create( $request->post() );
-
-                $data->save();
+                $data = SaleOrder::create( $request->post() );               
 
                 $order_items = $request->post('items');
 
@@ -103,7 +101,7 @@ class SaleOrderController extends Controller
                     $value['sale_order_id'] = $data->id;
                     $value['total_amount'] =  $value['quantity'] * $value['unit_price'];
                    $order_details = SaleOrderDetail::create($value);
-                   $order_details->save();
+                  
                 }
                 DB::commit();
                 return response(['data' => new SaleOrderResource($data)]);

@@ -25,7 +25,7 @@ class UpdatePartnerRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3',
-            'name_urdu' => 'sometimes|min:3',
+            'name_urdu' => 'sometimes|min:2',
             'phone' => 'sometimes|min:11',
             'address' => 'sometimes|min:3',
         ];

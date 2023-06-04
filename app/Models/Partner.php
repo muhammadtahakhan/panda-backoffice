@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 
-
-
 class Partner extends Model
 {
     use HasFactory, CreatedUpdatedBy, SoftDeletes;

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products');
             $table->double('quantity');
+            $table->string('batch');
             $table->double('cost_price');
             $table->double('sale_price');
             $table->bigInteger('created_by')->nullable();

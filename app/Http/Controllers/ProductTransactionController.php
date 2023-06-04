@@ -5,17 +5,35 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductTransactionRequest;
 use App\Http\Requests\UpdateProductTransactionRequest;
 use App\Models\ProductTransaction;
+use Illuminate\Http\Request;
+use App\Http\Resources\ProductTransactionResource;
+use Illuminate\Support\Facades\DB;
 
 class ProductTransactionController extends Controller
 {
+    private $per_page=10;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            $query = ProductTransaction::query()->orderBy('id','DESC');
+            if (!empty($request->search)) {
+                $query->where('batch','LIKE','%' .$request->search . '%')
+                ->orwhere('cost_price', 'LIKE', '%' . $request->search . '%');
+            }
+
+            if($request->has('per_page')) $this->per_page=$request->per_page;
+            $data = $query->paginate( $this->per_page );
+
+            return  ProductTransactionResource::collection($data);
+
+        } catch (\Exception $e) {
+            return response()->json(['message'=> $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -36,7 +54,34 @@ class ProductTransactionController extends Controller
      */
     public function store(StoreProductTransactionRequest $request)
     {
-        //
+        try {
+            /*------------------------------------------
+                --------------------------------------------
+                Start DB Transaction
+                --------------------------------------------
+                --------------------------------------------*/
+                DB::beginTransaction();
+
+                $data = ProductTransaction::create( $request->post() );
+                
+
+                DB::commit();
+                return response(['data' => new ProductTransactionResource($data)]);
+                /*------------------------------------------
+                --------------------------------------------
+                Commit Transaction to Save Data to Database
+                --------------------------------------------
+                --------------------------------------------*/
+
+        } catch (\Exception $e) {
+            /*------------------------------------------
+                --------------------------------------------
+                Rollback Database Entry
+                --------------------------------------------
+                --------------------------------------------*/
+                DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -68,9 +113,22 @@ class ProductTransactionController extends Controller
      * @param  \App\Models\ProductTransaction  $productTransaction
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductTransactionRequest $request, ProductTransaction $productTransaction)
+    public function update(UpdateProductTransactionRequest $request, $id)
     {
-        //
+        try {
+            $query = ProductTransaction::find($id);
+            $query->fill($request->all());
+            $data = $query->save();
+
+            if ($data) {
+                return response(['data' => new ProductTransactionResource($query)]);
+            } else {
+                return response()->json(['message' => "Oops some thing is wrong"], 500);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e.getMessage()], 500);
+        }
     }
 
     /**
@@ -79,8 +137,14 @@ class ProductTransactionController extends Controller
      * @param  \App\Models\ProductTransaction  $productTransaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductTransaction $productTransaction)
+    public function destroy(ProductTransaction $productTransaction, $id)
     {
-        //
+        try {
+            $data = ProductTransaction::destroy($id);
+            return response(['message' => "Delete successfully"]);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }

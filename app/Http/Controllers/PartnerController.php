@@ -55,15 +55,12 @@ class PartnerController extends Controller
     public function store(StorePartnerRequest $request)
     {
         try {
-
-
+            
             $data = Partner::create($request->post());
             return response(['data' => new PartnerResource($data)]);
 
           } catch (\Exception $e) {
-
             return response()->json(['message' => $e->getMessage()], 500);
-
         }
     }
 

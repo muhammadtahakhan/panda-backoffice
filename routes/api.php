@@ -16,6 +16,7 @@ use App\Http\Controllers\SaleOrderController;
 use App\Http\Controllers\SceneTemplateController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\ProductTransactionController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -102,6 +103,13 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/sale_order/{partner_id}', [SaleOrderController::class, 'getByPartner']);
     // delete sale order by {id}
     Route::delete('/sale_order/{id}', [SaleOrderController::class, 'destroy']);
+
+
+    // Product Transaction 
+    Route::get('/product_transaction', [ProductTransactionController::class,'index']);
+    Route::post('/product_transaction',[ProductTransactionController::class, 'store']);
+    Route::delete('/product_transaction/{id}',[ProductTransactionController::class, 'destroy']);
+    Route::patch('/product_transaction/{id}',[ProductTransactionController::class,'update']);
 
 
 });

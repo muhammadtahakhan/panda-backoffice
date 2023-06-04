@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CreatedUpdatedBy;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductTransaction extends Model
 {
-    use HasFactory;
-    protected $fillable = ['product_id','quantity','cost_price', 'sale_price'];
+    use HasFactory, CreatedUpdatedBy, SoftDeletes;
+    protected $fillable = ['product_id','quantity','batch','cost_price', 'sale_price'];
 
     /**
      * Get the post that owns the comment.
