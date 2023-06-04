@@ -36,6 +36,25 @@ class ProductTransactionController extends Controller
         }
     }
 
+    public function getByProduct(Request $request, $product_id)
+    {
+        try {
+            $query = ProductTransaction::query()->where('product_id', $product_id)->orderBy('id','DESC');
+            if (!empty($request->search)) {
+                $query->where('batch','LIKE','%' .$request->search . '%')
+                ->orwhere('cost_price', 'LIKE', '%' . $request->search . '%');
+            }
+
+            if($request->has('per_page')) $this->per_page=$request->per_page;
+            $data = $query->paginate( $this->per_page );
+
+            return  ProductTransactionResource::collection($data);
+
+        } catch (\Exception $e) {
+            return response()->json(['message'=> $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -63,7 +82,7 @@ class ProductTransactionController extends Controller
                 DB::beginTransaction();
 
                 $data = ProductTransaction::create( $request->post() );
-                
+
 
                 DB::commit();
                 return response(['data' => new ProductTransactionResource($data)]);

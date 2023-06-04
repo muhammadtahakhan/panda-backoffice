@@ -13,20 +13,20 @@ import moment from "moment";
 // ==========================Dev Dependicies
 import { DevTool } from "@hookform/devtools";
 import { fetchSaleOrders, hideForm } from "../../redux/saleOrderSlice";
+import { fetchProductsBatches } from "../../redux/productSlice";
 
 function SaleForm() {
-    const { listingData: partnersListing } = useSelector(
-        (state) => state.partners
-    );
-    const { products: productListing } = useSelector((state) => state.products);
+    const { listingData: partnersListing } = useSelector( (state) => state.partners );
+    const { products: productListing, productBatches } = useSelector((state) => state.products);
 
     const dispatch = useDispatch();
     const toastBR = useRef(null);
     const [loading, setLoading] = useState(false);
     const form = useForm();
-    const { control, register, handleSubmit, formState, setError, setValue } =
-        form;
+    const { control, register, handleSubmit, formState, setError, setValue, getValues, watch } =   form;
     const { errors } = formState;
+    // this is to rerender component
+    const value = watch("items");
 
     const { fields, append, prepend, remove, swap, move, insert } =
         useFieldArray({
@@ -36,12 +36,16 @@ function SaleForm() {
 
     useEffect(() => {
         append({});
+        dispatch(fetchProductsBatches());
     }, []);
 
     const setUnitPrice = (product_id, index) => {
-        let sale_price = productListing.filter((i) => i.id == product_id)[0][
-            "sale_price"
-        ];
+        let sale_price = productListing.filter((i) => i.id == product_id)[0]["sale_price"];
+        setValue(`items.${index}.unit_price`, sale_price);
+    };
+
+    const setBatchUnitPrice = (batch_id, index) => {
+        let sale_price = productBatches.filter((i) => i.id == batch_id)[0]["sale_price"];
         setValue(`items.${index}.unit_price`, sale_price);
     };
 
@@ -85,6 +89,10 @@ function SaleForm() {
                 });
             });
     };
+
+    const updateBatch = (product_id)=>{
+
+    }
 
     const renderEditporHeader = () => {
         return (
@@ -142,11 +150,7 @@ function SaleForm() {
                             )}
                         />
 
-                        {/* <Dropdown  {...register('partner_id', {required:{value:true, message:"Customer is required"}})}
-             filter options={partnersListing}
-                optionLabel="name"
-                optionValue='id'
-                placeholder="Select Customer" className="w-full md:w-14rem" /> */}
+
 
                         <p className="text-red-500 text-xs italic">
                             {errors.partner_id?.message}
@@ -210,6 +214,8 @@ function SaleForm() {
                                             onChange={(e) => {
                                                 setUnitPrice(e.value, index);
                                                 field.onChange(e.value);
+                                                updateBatch(e.value);
+
                                             }}
                                             className={classNames("w-full ", {
                                                 "p-invalid":
@@ -242,19 +248,19 @@ function SaleForm() {
                                             filter
                                             id={field.name}
                                             value={field.value}
-                                            optionLabel="name"
+                                            optionLabel="batch"
                                             optionValue="id"
                                             placeholder="Select Batch"
-                                            options={productListing}
+                                            options={productBatches.filter(i=>i.product_id==getValues(`items.${index}.product_id`)) || []}
                                             focusInputRef={field.ref}
                                             onChange={(e) => {
-                                                setUnitPrice(e.value, index);
+
+                                                setBatchUnitPrice(e.value, index);
                                                 field.onChange(e.value);
                                             }}
                                             className={classNames("w-full ", {
                                                 "p-invalid":
-                                                    errors.items?.[index]?.batch
-                                                        ?.message,
+                                                    errors.items?.[index]?.batch?.message,
                                             })}
                                         />
                                     )}

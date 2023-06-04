@@ -4,6 +4,7 @@ export const productSlice = createSlice({
     name: 'products',
     initialState: {
         products: [],
+        productBatches: [],
         isLoading: false,
         error: false,
         formVisibility: false
@@ -26,6 +27,10 @@ export const productSlice = createSlice({
             state.products = action.payload;
             state.isLoading = false;
         },
+        batchesSuccess: (state, action) => {
+            state.productBatches = action.payload;
+            state.isLoading = false;
+        },
         saveProduct: (state, action) => {
             state.products = action.payload
         },
@@ -36,7 +41,7 @@ export const productSlice = createSlice({
     }
 })
 
-export const { saveProduct, productsSuccess, startLoading, hasError, showForm, hideForm, removeItem } = productSlice.actions
+export const { saveProduct, productsSuccess, startLoading, hasError, showForm, hideForm, removeItem, batchesSuccess } = productSlice.actions
 export default productSlice.reducer
 
 export const fetchProducts = () => async dispatch => {
@@ -48,6 +53,22 @@ export const fetchProducts = () => async dispatch => {
             // handleError(error)
             console.log("data", error)
         })
+    }
+    catch (e) {
+        return console.error(e.message);
+    }
+}
+
+export const fetchProductsBatches = () => async dispatch => {
+    try {
+          await window.axios.get(`/api/product_transaction`).then(response => {
+            dispatch(batchesSuccess(response.data.data))
+        }).catch(error => {
+            // handleError(error)
+            console.log("data", error)
+        })
+
+
     }
     catch (e) {
         return console.error(e.message);
