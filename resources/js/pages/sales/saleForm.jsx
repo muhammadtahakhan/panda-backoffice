@@ -240,7 +240,7 @@ function SaleForm() {
                                 Batch
                                 </label>
                                 <Controller
-                                    name={`items.${index}.batch`}
+                                    name={`items.${index}.batch_id`}
                                     control={control}
                                     rules={{ required: "batch is required." }}
                                     render={({ field, fieldState }) => (

@@ -6,9 +6,11 @@ use App\Http\Requests\StoreSaleOrderRequest;
 use App\Http\Requests\UpdateSaleOrderRequest;
 use App\Models\SaleOrder;
 use App\Models\SaleOrderDetail;
+use App\Models\ProductTransaction;
 use Illuminate\Http\Request;
 use App\Http\Resources\SaleOrderResource;
 use Illuminate\Support\Facades\DB;
+
 
 
 class SaleOrderController extends Controller
@@ -93,15 +95,18 @@ class SaleOrderController extends Controller
                 --------------------------------------------*/
                 DB::beginTransaction();
 
-                $data = SaleOrder::create( $request->post() );               
+                $data = SaleOrder::create( $request->post() );
 
                 $order_items = $request->post('items');
 
                 foreach ($order_items as $key => $value) {
                     $value['sale_order_id'] = $data->id;
                     $value['total_amount'] =  $value['quantity'] * $value['unit_price'];
-                   $order_details = SaleOrderDetail::create($value);
-                  
+                    $order_details = SaleOrderDetail::create($value);
+                    $batch  = ProductTransaction::where('id', $value['batch_id'])->first()->toArray();
+                    $batch['quantity'] = -$value['quantity'];
+                    ProductTransaction::create($batch);
+
                 }
                 DB::commit();
                 return response(['data' => new SaleOrderResource($data)]);
