@@ -61,7 +61,7 @@ export const fetchProducts = () => async dispatch => {
 
 export const fetchProductsBatches = () => async dispatch => {
     try {
-          await window.axios.get(`/api/product_transaction`).then(response => {
+        await window.axios.get(`/api/product_transaction`).then(response => {
             dispatch(batchesSuccess(response.data.data))
         }).catch(error => {
             // handleError(error)
@@ -74,7 +74,23 @@ export const fetchProductsBatches = () => async dispatch => {
         return console.error(e.message);
     }
 }
-
+// Edit Product using api
+export const editProduct = (id) => async dispatch => {
+    try {
+        await window.axios.patch(`/api/product/${id}`)
+            .then(response => {
+                // Handle success
+                console.log("Khan is here", response.data);
+            })
+            .catch(error => {
+                // Handle error
+                console.error("Data", error);
+            });
+    }
+    catch (e) {
+        return console.error(e.message);
+    }
+};
 // delete Product using api
 export const deleteProduct = (id) => async dispatch => {
     // Show a confirmation dialog to the user

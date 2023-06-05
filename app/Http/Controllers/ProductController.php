@@ -96,11 +96,20 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, $id)
     {
         try {
+            $query = Product::find($id);
+            $query->fill($request->all());
+            $data = $query->save();
 
-            return response(['data' => new ProductResource($product)]);
+            if ($data) {
+                return response(['data' => new ProductResource($query) ]);
+            } else {
+                return response()->json(['message' => "Oops some thing is wrong"], 500);
+            }
+
+            //return response(['data' => new ProductResource($product)]);
 
         } catch (\Exception $e) {
 

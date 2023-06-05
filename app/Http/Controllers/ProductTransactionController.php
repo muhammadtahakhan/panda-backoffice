@@ -74,15 +74,8 @@ class ProductTransactionController extends Controller
     public function store(StoreProductTransactionRequest $request)
     {
         try {
-            /*------------------------------------------
-                --------------------------------------------
-                Start DB Transaction
-                --------------------------------------------
-                --------------------------------------------*/
                 DB::beginTransaction();
-
                 $data = ProductTransaction::create( $request->post() );
-
 
                 DB::commit();
                 return response(['data' => new ProductTransactionResource($data)]);

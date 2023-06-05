@@ -16,6 +16,7 @@ import {
     showForm,
     hideForm,
     deleteProduct,
+    editProduct,
 } from "../../redux/productSlice";
 import { TieredMenu } from "primereact/tieredmenu";
 import { useRef } from "react";
