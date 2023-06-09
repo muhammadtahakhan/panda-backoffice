@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePartnerRequest;
+use App\Http\Requests\MakePaymentRequest;
 use App\Http\Requests\UpdatePartnerRequest;
 use App\Models\Partner;
+use App\Models\Payment;
 use App\Http\Resources\PartnerResource;
+use App\Http\Resources\PaymentResource;
 use Illuminate\Http\Request;
 
 
@@ -55,7 +58,7 @@ class PartnerController extends Controller
     public function store(StorePartnerRequest $request)
     {
         try {
-            
+
             $data = Partner::create($request->post());
             return response(['data' => new PartnerResource($data)]);
 
@@ -63,6 +66,9 @@ class PartnerController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+
+
 
     /**
      * Display the specified resource.
@@ -129,5 +135,30 @@ class PartnerController extends Controller
           return response()->json(['message' => $e->getMessage()], 500);
 
       }
+    }
+
+    // =========================================================Payments
+    public function makePartnerPayment(MakePaymentRequest $request)
+    {
+        try {
+
+            $data = Payment::create($request->post());
+            return response()->json(['message' => "payment received successfully"], 200);
+
+          } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+    public function paymentsHistory($partner_id)
+    {
+        try {
+
+            $data = Payment::where('partner_id', $partner_id)->get();
+            // dd($data);
+            return response(['data' => new PaymentResource($data)]);
+
+          } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }

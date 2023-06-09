@@ -114,5 +114,9 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/product_transaction/{product_id}', [ProductTransactionController::class,'getByProduct']);
 
 
+    Route::post('/receive_payment',[PartnerController::class, 'makePartnerPayment']);
+    Route::get('/payments/{partner_id}',[PartnerController::class, 'paymentsHistory']);
+
+
 });
 
