@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react'
 
 
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useForm} from 'react-hook-form';
 import classNames from 'classnames'
 
@@ -12,9 +12,14 @@ import { fetchPartners, hideForm } from '../../redux/partnerSlice';
 
 export default function PartnerFrom() {
     const dispatch = useDispatch();
+    const { selectedPartner } = useSelector( (state) => state.partners );
+
+
     const toastBR = useRef(null);
     const [loading, setLoading] = useState(false);
-    const form = useForm();
+    const form = useForm({
+        defaultValues: selectedPartner
+      });
     const {register, handleSubmit, formState, setError} = form;
     const {errors} = formState;
 
@@ -24,21 +29,20 @@ export default function PartnerFrom() {
 
 
     const onSubmitForm = (data) => {
-        console.log("Form submited", data)
         setLoading(true);
-        window.axios.post('/api/partner',data).then(response => {
-            console.log("==>");
+        let _url = selectedPartner.id?`/api/partner/${selectedPartner.id}`:`/api/partner`;
+        (selectedPartner.id ? window.axios.patch: window.axios.post)(_url,data).then(response => {
             dispatch(fetchPartners());
             setLoading(false);
             dispatch(hideForm())
         }).catch(error => {
             setLoading(false);
-            console.log("==> ", error.response.data.message)
-            console.log("==> ", error.response.data.errors)
+            // console.log("==> ", error.response.data.message)
+            // console.log("==> ", error.response.data.errors)
             showMessage(error.response.data.message);
             Object.keys(error.response.data.errors).forEach(errorKey => {
-                console.log("field ==> ", errorKey)
-                console.log("field ==> ", error.response.data.errors[errorKey][0])
+                // console.log("field ==> ", errorKey)
+                // console.log("field ==> ", error.response.data.errors[errorKey][0])
 
                 setError(errorKey, { type: 'server', message: error.response.data.errors[errorKey][0] });
             });

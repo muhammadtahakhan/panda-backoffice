@@ -82,10 +82,11 @@ export default function Partners() {
     const menu = useRef(null);
     const items = [
         {
-            label: "Show",
+            label: "Edit",
             icon: "pi pi-pencil",
             command: () => {
                 console.log("selected", selectedRow.rowData.id);
+                dispatch(showForm(selectedRow.rowData));
             },
         },
         {

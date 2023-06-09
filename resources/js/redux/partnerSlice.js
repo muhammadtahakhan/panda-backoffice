@@ -5,19 +5,21 @@ export const partnerSlice = createSlice({
     initialState: {
         listingData: [],
         isLoading: false,
-        formVisibility: false
+        formVisibility: false,
+        selectedPartner: {}
     },
     reducers: {
-        hideForm: state => {
+        hideForm: (state, action) => {
+            state.selectedPartner = {}
             state.formVisibility = false;
         },
-        showForm: state => {
+        showForm: (state, action) =>{
+            state.selectedPartner = action.payload || {};
             state.formVisibility = true;
         },
         startLoading: state => {
             state.isLoading = true;
         },
-
         fetchSuccess: (state, action) => {
             state.listingData = action.payload;
             state.isLoading = false;
