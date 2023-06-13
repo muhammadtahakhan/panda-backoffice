@@ -19,7 +19,8 @@ class Partner extends Model
     protected function balance(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => 2390,
+            // get: fn ($value) =>  SaleOrder::where('partner_id', $this->id)->get()->sum('total_amount'),
+            get: fn ($value) => SaleOrder::where('partner_id', $this->id)->get()->sum('total_amount') - Payment::where('partner_id', $this->id)->sum('amount') ,
 
         );
     }

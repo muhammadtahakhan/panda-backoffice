@@ -56,4 +56,6 @@ php artisan make:model Product -crR
 
 
 Command :
+php artisan make:resource UserResource
+
 php artisan migrate:rollback --step=1

@@ -19,9 +19,11 @@ import { Dialog } from "primereact/dialog";
 import classNames from "classnames";
 import PartnerFrom from "./partnerForm";
 import { TieredMenu } from "primereact/tieredmenu";
+import MakePartnerPayment from "./makePartnerPayment";
 
 export default function Partners() {
     const dispatch = useDispatch();
+    const [paymentFormVis, setPaymentFormVis] = useState(false);
     const { listingData, isLoading, formVisibility } = useSelector(
         (state) => state.partners
     );
@@ -77,7 +79,7 @@ export default function Partners() {
 
     const header = renderHeader();
 
-    // ////////////////////////// 4\6\2023\ ////////////////////////////////////
+    // //////////////////////////  ////////////////////////////////////
     const [selectedRow, setSelectedRow] = useState({});
     const menu = useRef(null);
     const items = [
@@ -87,6 +89,13 @@ export default function Partners() {
             command: () => {
                 console.log("selected", selectedRow.rowData.id);
                 dispatch(showForm(selectedRow.rowData));
+            },
+        },
+        {
+            label: "Receive Payment",
+            icon: "pi pi-pencil",
+            command: () => {
+                setPaymentFormVis(true);
             },
         },
         {
@@ -102,7 +111,8 @@ export default function Partners() {
             <>
                 <TieredMenu
                     onHide={() => {
-                        setSelectedRow({});
+                        // setSelectedRow({});
+                        // debugger;
                     }}
                     model={items}
                     popup
@@ -113,6 +123,7 @@ export default function Partners() {
                     className="custom-target-icon pi pi-ellipsis-v p-text-secondary p-overlay-badge"
                     onClick={(e) => {
                         setSelectedRow({ rowData });
+                        console.log(rowData)
                         menu.current.toggle(e);
                     }}
                 ></i>
@@ -191,6 +202,20 @@ export default function Partners() {
                 </Dialog>
             </div>
             {/* ======================================Overlay From Ends=========================================== */}
+             {/* ======================================Overlay Payment From Start=========================================== */}
+             <div className="card flex justify-content-center">
+                <Dialog
+                    position={"right"}f
+                    header="Header"
+                    visible={paymentFormVis}
+                    onHide={() => setPaymentFormVis(false)}
+                    style={{ width: "50vw" }}
+                    breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+                >
+                    <MakePartnerPayment setPaymentFormVis={setPaymentFormVis} partner={selectedRow.rowData} />
+                </Dialog>
+            </div>
+            {/* ======================================Overlay Payment From Ends=========================================== */}
         </>
     );
 }

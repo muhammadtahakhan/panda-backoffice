@@ -143,7 +143,8 @@ class PartnerController extends Controller
         try {
 
             $data = Payment::create($request->post());
-            return response()->json(['message' => "payment received successfully"], 200);
+            return response(['data' => new PaymentResource($data), 'message' => "payment received successfully"]);
+
 
           } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);

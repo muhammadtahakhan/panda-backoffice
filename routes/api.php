@@ -105,14 +105,12 @@ Route::middleware(['auth:sanctum'])->group(function() {
     // delete sale order by {id}
     Route::delete('/sale_order/{id}', [SaleOrderController::class, 'destroy']);
 
-
     // Product Transaction
     Route::get('/product_transaction', [ProductTransactionController::class,'index']);
     Route::post('/product_transaction',[ProductTransactionController::class, 'store']);
     Route::delete('/product_transaction/{id}',[ProductTransactionController::class, 'destroy']);
     Route::patch('/product_transaction/{id}',[ProductTransactionController::class,'update']);
     Route::get('/product_transaction/{product_id}', [ProductTransactionController::class,'getByProduct']);
-
 
     Route::post('/receive_payment',[PartnerController::class, 'makePartnerPayment']);
     Route::get('/payments/{partner_id}',[PartnerController::class, 'paymentsHistory']);
