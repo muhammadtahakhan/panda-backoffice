@@ -32,6 +32,7 @@ import "primereact/resources/primereact.min.css";
 import AdminLayout from './layouts/AdminLayout'
 import Partners from './pages/partners/partners'
 import Products from './pages/products/products'
+import Purchase from './pages/purchase/purchase'
 
 
 export default function AppBase() {
@@ -65,6 +66,7 @@ export default function AppBase() {
 
                                     <Route index element={ <Dashboard />} />
                                     <Route path="sales" element={ <IsLoggedInRoute><Sales /></IsLoggedInRoute> } />
+                                    <Route path="purchase" element={ <IsLoggedInRoute><Purchase /></IsLoggedInRoute> } />
                                     <Route path="partners" element={ <IsLoggedInRoute><Partners /></IsLoggedInRoute> } />
                                     <Route path="products" element={ <IsLoggedInRoute><Products /></IsLoggedInRoute> } />
 
