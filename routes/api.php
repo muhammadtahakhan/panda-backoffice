@@ -17,6 +17,7 @@ use App\Http\Controllers\SceneTemplateController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductTransactionController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -96,14 +97,17 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::delete('/partner/{id}', [PartnerController::class, 'destroy']);
     Route::patch('/partner/{id}', [PartnerController::class, 'update']);
 
-    // get all sale orders
+    // Sale Order
     Route::get('/sale_order', [SaleOrderController::class, 'index']);
-     // create sale order
     Route::post('/sale_order', [SaleOrderController::class, 'store']);
-    // get all sale orders by specific partner
     Route::get('/sale_order/{partner_id}', [SaleOrderController::class, 'getByPartner']);
-    // delete sale order by {id}
     Route::delete('/sale_order/{id}', [SaleOrderController::class, 'destroy']);
+
+    // Pruchase Order
+    Route::get('/purchase_order', [PurchaseOrderController::class, 'index']);
+    Route::post('/purchase_order', [PurchaseOrderController::class, 'store']);
+    Route::get('/purchase_order/{partner_id}', [PurchaseOrderController::class, 'getByPartner']);
+    Route::delete('/purchase_order/{id}', [PurchaseOrderController::class, 'destroy']);
 
     // Product Transaction
     Route::get('/product_transaction', [ProductTransactionController::class,'index']);
